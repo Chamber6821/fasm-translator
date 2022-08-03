@@ -1,6 +1,6 @@
 #pragma once
 
-#include "translator.hpp"
+#include "../factorio-asm/syntax.hpp"
 
 module(Storage)
 	member(Source, Get(int address), (U2 G(address)))

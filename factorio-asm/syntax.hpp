@@ -2,6 +2,8 @@
 
 #include "syntax/module.hpp"
 
+#define result result
+
 #ifdef TRANSLATE
 
 #include "syntax/registers-translate.hpp"

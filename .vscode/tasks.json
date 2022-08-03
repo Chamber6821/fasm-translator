@@ -3,7 +3,7 @@
         {
             "type": "shell",
             "label": "C/C++: g++ трансляция активного файла",
-            "command": "bash ./translate.sh",
+            "command": "bash -c './factorio-asm/translate.sh src/main.cpp build/main.fasm'",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

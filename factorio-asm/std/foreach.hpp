@@ -1,6 +1,6 @@
-#include "translator.hpp"
+#pragma once
 
-#define result result
+#include "../syntax.hpp"
 
 #define foreach(variable, collection, ...) \
 	while_not(zero, rd(collection), \
@@ -9,5 +9,3 @@
 		combineAssign(collection, rd(variable)); \
 		__VA_ARGS__ \
 	)
-
-procedure(assignOpposite, (Register reg), calcAssign(reg, mult, -1);)

@@ -1,6 +1,10 @@
-#include "translator.hpp"
+#include "../factorio-asm/syntax.hpp"
+#include "../factorio-asm/std/math.hpp"
+#include "../factorio-asm/std/foreach.hpp"
+#include "../factorio-asm/std/debug.hpp"
+#include "../factorio-asm/std/fibonacci.hpp"
+
 #include "devices.hpp"
-#include "std.hpp"
 
 
 procedure(addToStationcResources, (RegisterSource value, Register stationResources),
@@ -111,16 +115,9 @@ procedure(unload, (Register reg1, Register reg2, Register reg3, Register reg4),
 #undef resources
 #undef stacks
 
-
-procedure(assert, (Condition condition, Register reg),
-	if (condition, rd(reg),
-		exit(reg);
-	)
-)
-
 PROGRAM_START
 
-	#define port       DeclareRegister(1)
+	/*#define port       DeclareRegister(1)
 	#define resigsters DeclareRegister(1), DeclareRegister(2), DeclareRegister(3), DeclareRegister(4)
 
 	if_not (zero, Spaceport::SeatForLoad,
@@ -138,6 +135,9 @@ PROGRAM_START
 	)
 
 	#define someRegister DeclareRegister(1)
-	assert(all_positive, someRegister);
+	assert(all_positive, someRegister);*/
+
+	fibonacci(DeclareRegister(1), DeclareRegister(2), DeclareRegister(3));
+	exit(0);
 
 PROGRAM_END
