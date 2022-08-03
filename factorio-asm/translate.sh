@@ -7,7 +7,7 @@ echo "Translate '$in_file' file to '$out_file' file"
 out_dir=$(dirname "$out_file")
 mkdir -p $out_dir
 
-g++ -DTRANSLATE -w -E -o $temporary $in_file
+g++ -DTRANSLATE -w -E -Ifactorio-asm  -o $temporary $in_file
 g++ -DTRANSLATE    -E -o $out_file $temporary
 rm $temporary
 

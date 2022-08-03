@@ -1,8 +1,8 @@
-#include "../factorio-asm/syntax.hpp"
-#include "../factorio-asm/std/math.hpp"
-#include "../factorio-asm/std/foreach.hpp"
-#include "../factorio-asm/std/debug.hpp"
-#include "../factorio-asm/std/fibonacci.hpp"
+#include "syntax.hpp"
+#include "std/math.hpp"
+#include "std/foreach.hpp"
+#include "std/debug.hpp"
+#include "std/fibonacci.hpp"
 
 #include "devices.hpp"
 
