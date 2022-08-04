@@ -6,6 +6,8 @@
 
 #include "devices.hpp"
 
+#define _ALL_REGISTERS DeclareRegister(1), DeclareRegister(2), DeclareRegister(3), DeclareRegister(4)
+
 
 procedure(addToStationcResources, (RegisterSource value, Register stationResources),
 	mv(stationResources, Storage::GetStationResources());
@@ -115,29 +117,27 @@ procedure(unload, (Register reg1, Register reg2, Register reg3, Register reg4),
 #undef resources
 #undef stacks
 
-PROGRAM_START
 
-	/*#define port       DeclareRegister(1)
-	#define resigsters DeclareRegister(1), DeclareRegister(2), DeclareRegister(3), DeclareRegister(4)
+procedure(handleEvents, (Register reg1, Register reg2, Register reg3, Register reg4),
+	#define port reg1
 
 	if_not (zero, Spaceport::SeatForLoad,
 		mv(port, Spaceport::SeatForLoad);
 		Spaceport::ChooseSeat(rd(port));
 
-		load(resigsters);
+		load(_ALL_REGISTERS);
 	)
 	
 	if_not (zero, Spaceport::SeatForUnload,
 		mv(port, Spaceport::SeatForUnload);
 		Spaceport::ChooseSeat(rd(port));
 
-		unload(resigsters);
+		unload(_ALL_REGISTERS);
 	)
+)
+#undef port
 
-	#define someRegister DeclareRegister(1)
-	assert(all_positive, someRegister);*/
 
-	fibonacci(DeclareRegister(1), DeclareRegister(2), DeclareRegister(3));
-	exit(0);
-
-PROGRAM_END
+LOOP_START
+	handleEvents(_ALL_REGISTERS);
+LOOP_END

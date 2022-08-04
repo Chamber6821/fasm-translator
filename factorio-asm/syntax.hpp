@@ -16,8 +16,8 @@
 #include "syntax/exit-translate.hpp"
 #include "syntax/structures-translate.hpp"
 
-#define PROGRAM_START 
-#define PROGRAM_END
+#define LOOP_START
+#define LOOP_END
 
 #else
 
@@ -31,7 +31,7 @@
 #include "syntax/critical.hpp"
 #include "syntax/exit.hpp"
 
-#define PROGRAM_START int main() {
-#define PROGRAM_END }
+#define LOOP_START int main() {
+#define LOOP_END }
 
 #endif
