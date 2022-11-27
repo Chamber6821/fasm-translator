@@ -6,8 +6,6 @@
 
 #include "devices.hpp"
 
-#define _ALL_REGISTERS DeclareRegister(1), DeclareRegister(2), DeclareRegister(3), DeclareRegister(4)
-
 
 procedure(addToStationcResources, (RegisterSource value, Register stationResources),
 	mv(stationResources, Storage::GetStationResources());
@@ -39,9 +37,9 @@ procedure(getRealReqestNegative, (Register result, Register onWay),
 	combineAssign(result, rd(onWay));
 )
 
-procedure(updateReturnPointForShip, (Register geopoint),
-	mv(geopoint, Seat::Geopoint);
-	Seat::SetReturnPointForShip(rd(geopoint));
+procedure(updateCourceForSelectedShip, (Register geopoint),
+	mv(geopoint, Resources::WhoIsRecipient);
+	Seat::SetCource(rd(geopoint));
 )
 
 
@@ -79,7 +77,7 @@ procedure(load, (Register reg1, Register reg2, Register reg3, Register reg4),
 
 	critical(
 		Seat::SetLogisticRequest(rd(resource));
-		updateReturnPointForShip(reg2);
+		updateCourceForSelectedShip(reg2);
 
 		assignOpposite(resource);
 		addToStationcResources(rd(resource), reg2);
@@ -98,8 +96,7 @@ procedure(unload, (Register reg1, Register reg2, Register reg3, Register reg4),
 
 	critical(
 		Seat::UnloadAllResources();
-		updateReturnPointForShip(reg3);
-
+		updateCourceForSelectedShip(reg3);
 
 		mv(stationResources, Storage::GetStationResources());
 
@@ -118,26 +115,29 @@ procedure(unload, (Register reg1, Register reg2, Register reg3, Register reg4),
 #undef stacks
 
 
-procedure(handleEvents, (Register reg1, Register reg2, Register reg3, Register reg4),
-	#define port reg1
+procedure(receiveParcels, (Register port, Register reg2, Register reg3, Register reg4),
+	while_not (zero, Cosmoport::AnyForLoad,
+		mv(port, Cosmoport::AnyForLoad);
+		Cosmoport::ChooseSeat(rd(port));
 
-	if_not (zero, Spaceport::SeatForLoad,
-		mv(port, Spaceport::SeatForLoad);
-		Spaceport::ChooseSeat(rd(port));
-
-		load(_ALL_REGISTERS);
-	)
-	
-	if_not (zero, Spaceport::SeatForUnload,
-		mv(port, Spaceport::SeatForUnload);
-		Spaceport::ChooseSeat(rd(port));
-
-		unload(_ALL_REGISTERS);
+		load(port, reg2, reg3, reg4);
 	)
 )
-#undef port
+
+
+procedure(sendParcels, (Register port, Register reg2, Register reg3, Register reg4),
+	while_not (zero, Cosmoport::AnyForUnload,
+		mv(port, Cosmoport::AnyForUnload);
+		Cosmoport::ChooseSeat(rd(port));
+
+		unload(port, reg2, reg3, reg4);
+	)
+)
 
 
 LOOP_START
-	handleEvents(_ALL_REGISTERS);
+	#define _ALL_REGISTERS DeclareRegister(1), DeclareRegister(2), DeclareRegister(3), DeclareRegister(4)
+
+	receiveParcels(_ALL_REGISTERS);
+	sendParcels(_ALL_REGISTERS);
 LOOP_END
